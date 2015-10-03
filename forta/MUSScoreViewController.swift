@@ -1,0 +1,250 @@
+//
+//  MUSScoreViewController.swift
+//  swift-forte2
+//
+//  Created by brendon mckinley on 18/07/2015.
+//  Copyright © 2015 brendon mckinley. All rights reserved.
+//
+
+import UIKit
+
+class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIScrollViewDelegate {
+    
+    
+    var delegate: MUSScoreViewControllerDelegate?
+    var initialImage: UIImage?
+    var initialPageNumber: Int?
+    
+    var imageDownloadQueue: NSOperationQueue?
+    var coverImage: UIImage?
+    var shareSizeSheet: UIActionSheet?
+    var sharePopover: UIPopoverController?
+    var shareButtonRect: CGRect?
+    var dataController: MUSDataController?
+    dynamic var itemInformation: NLAItemInformation?
+    
+    var score: Score?
+    var pageImages: [UIImage] = []
+    var pageViews: [UIImageView?] = []
+    var pageCount: Int?
+    
+    @IBOutlet weak var publisherLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var creatorLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBOutlet weak var scorePageScrollView: UIScrollView!
+    @IBOutlet weak var additionalInformationView: UIView!
+
+    
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var pageControl: UIPageControl!
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        initialise()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialise()
+    }
+    
+    func initialise() {
+        initialPageNumber = -1
+        itemInformation = NLAItemInformation()
+        itemInformation?.creator = "fish monger"
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dataController = MUSDataController.sharedController
+        imageDownloadQueue = NSOperationQueue()
+
+        addObserver(self, forKeyPath: "itemInformation", options: NSKeyValueObservingOptions.New, context: nil)
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "toggleChrome:")
+        scorePageScrollView.addGestureRecognizer(tapRecognizer)
+        scorePageScrollView.frame = view.bounds
+        //scorePageScrollView.dataSource = self
+        scorePageScrollView.delegate = self
+        //scorePageScrollView.reloadData()
+        
+        titleLabel.text = score?.title
+        descriptionLabel.text = nil
+        creatorLabel.text = nil
+        
+        //print(score?.valueForKey("orderedPages")?.count, appendNewline: true)
+        
+        // Request the additional information
+        let sharedController = NLAOpenArchiveController.sharedInstance.requestDetailsForItemWithIdentifier(score!.identifier) {
+            (itemInfo: NLAItemInformation) -> Void in
+            self.itemInformation = itemInfo
+        }
+        
+        pageCount = numberOfPagesInPagingScrollView()
+        pageControl.currentPage = 0
+        pageControl.numberOfPages = pageCount!
+        
+        for _ in 0..<pageCount! {
+            pageViews.append(nil)
+        }
+        
+        let pagesScrollViewSize = scorePageScrollView.frame.size
+        scorePageScrollView.contentSize = CGSizeMake(pagesScrollViewSize.width * CGFloat(pageCount!), pagesScrollViewSize.height)
+        
+        loadVisiblePages()
+
+    }
+    
+    func loadPage(page: Int) {
+        
+        if page < 0 || page >= pageImages.count {
+            // If it's outside the range of what you have to display, then do nothing
+            return
+        }
+        if let pageView = pageViews[page] {
+            // Do nothing. The view is already loaded.
+        } else {
+            var frame = scorePageScrollView.bounds
+            frame.origin.x = frame.size.width * CGFloat(page)
+            frame.origin.y = 0.0
+            
+            let newPageView = UIImageView(image: pageImages[page])
+            newPageView.contentMode = .ScaleAspectFit
+            newPageView.frame = frame
+            scorePageScrollView.addSubview(newPageView)
+            
+            pageViews[page] = newPageView
+        }
+    }
+    
+    
+    func loadVisiblePages() {
+        
+        // First, determine which page is currently visible
+        let pageWidth = scorePageScrollView.frame.size.width
+        let page = Int(floor((scorePageScrollView.contentOffset.x * 2.0 + pageWidth) / (pageWidth * 2.0)))
+        
+        // Update the page control
+        pageControl.currentPage = page
+        
+        // Work out which pages you want to load
+        let firstPage = page - 1
+        let lastPage = page + 1
+        
+        // Purge anything before the first page
+        for var index = 0; index < firstPage; ++index {
+            purgePage(index)
+        }
+        
+        // Load pages in our range
+        for var index = firstPage; index <= lastPage; ++index {
+            loadPage(index)
+        }
+        
+        // Purge anything after the last page
+        for var index = lastPage+1; index < pageImages.count; ++index {
+            purgePage(index)
+        }
+    }
+    
+    
+    func purgePage(page: Int) {
+        
+        if page < 0 || page >= pageImages.count {
+            // If it's outside the range of what you have to display, then do nothing
+            return
+        }
+        
+        // Remove a page from the scroll view and reset the container array
+        if let pageView = pageViews[page] {
+            pageView.removeFromSuperview()
+            pageViews[page] = nil
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView!) {
+        // Load the pages that are now on screen
+        loadVisiblePages()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        //setSelectedPage()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+    }
+    
+    
+    
+    //MARK: - Private Methods
+    
+    func toggleChrome() {
+        // If it is visible, hide it
+        if toolBar.alpha == 1.0 {
+            hideChrome()
+        }
+        else {
+            showChrome()
+        }
+    }
+    
+    func hideChrome() {
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+        UIView.animateWithDuration(0.5) {
+            self.toolBar.alpha = 0.0
+            self.additionalInformationView.alpha = 0.0
+            //self.darkInfoButton.alpha = 0.0
+            //self.lightInfoButton.alpha = 0.0
+        }
+    }
+    
+    func showChrome() {
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+        UIView.animateWithDuration(0.25) {
+            self.toolBar.alpha = 1.0
+            self.additionalInformationView.alpha = 1.0
+            //self.darkInfoButton.alpha = 1.0
+            //self.lightInfoButton.alpha = 1.0
+        }
+    }
+    
+    // MARK: UIScrollView methods
+    
+    func numberOfPagesInPagingScrollView() -> Int {
+        let count = score?.valueForKey("orderedPages")?.count
+        return count!
+    }
+  
+    // MARK: - UI Actions
+    
+    @IBAction func dismiss(sender: AnyObject) {
+        // TODO: incomplete
+        presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
+    }
+    
+    // MARK: - KVO
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        //print("ff", appendNewline: true)
+        if keyPath! == "itemInformation" {
+            // TODO: add spinny check and stop
+            creatorLabel.text = itemInformation?.creator
+            descriptionLabel.text = itemInformation?._description
+            publisherLabel.text = itemInformation?.publisher
+            dateLabel.text = itemInformation?.date
+        }
+    }
+    
+    deinit {
+        removeObserver(self, forKeyPath: "itemInformation")
+    }
+    
+}
+
+protocol MUSScoreViewControllerDelegate {
+    func scoreViewController(controller: MUSScoreViewController, didDismissScore score: Score, atPageNumber pageNumber: Int)
+}
