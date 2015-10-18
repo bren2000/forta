@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Haneke
 
 class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIScrollViewDelegate {
     
@@ -26,6 +27,7 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
     var score: Score?
     var pageImages: [UIImage] = []
     var pageViews: [UIImageView?] = []
+    var pages: [Page] = []
     var pageCount: Int?
     
     @IBOutlet weak var publisherLabel: UILabel!
@@ -83,6 +85,8 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
             self.itemInformation = itemInfo
         }
         
+        pages = score?.valueForKey("orderedPages") as! [Page]
+        
         pageCount = numberOfPagesInPagingScrollView()
         pageControl.currentPage = 0
         pageControl.numberOfPages = pageCount!
@@ -100,18 +104,24 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
     
     func loadPage(page: Int) {
         
-        if page < 0 || page >= pageImages.count {
+        if page < 0 || page >= pages.count {
             // If it's outside the range of what you have to display, then do nothing
+            print("gggo", separator: "", terminator: "\n")
             return
         }
-        if let pageView = pageViews[page] {
+        if let _ = pageViews[page] {
+            print("yo", separator: "", terminator: "\n")
             // Do nothing. The view is already loaded.
         } else {
             var frame = scorePageScrollView.bounds
             frame.origin.x = frame.size.width * CGFloat(page)
             frame.origin.y = 0.0
             
-            let newPageView = UIImageView(image: pageImages[page])
+            let newPageView = UIImageView()
+            newPageView.frame = frame
+            newPageView.hnk_setImageFromURL(pages[page].imageURL())
+            
+            //let newPageView = UIImageView(image: pages[page].imageURL())
             newPageView.contentMode = .ScaleAspectFit
             newPageView.frame = frame
             scorePageScrollView.addSubview(newPageView)
@@ -126,7 +136,7 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
         // First, determine which page is currently visible
         let pageWidth = scorePageScrollView.frame.size.width
         let page = Int(floor((scorePageScrollView.contentOffset.x * 2.0 + pageWidth) / (pageWidth * 2.0)))
-        
+        print("\(page)", separator: "", terminator: "\n")
         // Update the page control
         pageControl.currentPage = page
         
@@ -216,6 +226,13 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
     
     func numberOfPagesInPagingScrollView() -> Int {
         let count = score?.valueForKey("orderedPages")?.count
+        print(score?.valueForKey("webURL"))
+        let s = score?.valueForKey("orderedPages") as! [Page]
+        print(s[2].imageURL(), separator: "", terminator: "\n")
+//        print("\(s)", separator: "", terminator: "\n")
+//        for pg in score?.valueForKey("orderedPages") as! [Page] {
+//            print("\(pg.imageURL())", terminator: "\n")
+//        }
         return count!
     }
   
