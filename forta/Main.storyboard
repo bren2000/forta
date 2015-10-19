@@ -308,13 +308,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9gr-2t-CgM">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9gr-2t-CgM">
                                 <rect key="frame" x="-8" y="-10" width="617" height="617"/>
                                 <animations/>
                             </scrollView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Qe-b8-vih" userLabel="Additional Information View">
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Qe-b8-vih" userLabel="Additional Information View">
                                 <rect key="frame" x="0.0" y="353" width="600" height="247"/>
                                 <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJy-x0-7kD">
+                                        <rect key="frame" x="0.0" y="-7" width="600" height="254"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="0Ex-yH-FLy">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="254"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tZ1-Hn-hta">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="H6S-6f-gWI">
+                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <animations/>
+                                                    </view>
+                                                    <animations/>
+                                                    <vibrancyEffect>
+                                                        <blurEffect style="light"/>
+                                                    </vibrancyEffect>
+                                                </visualEffectView>
+                                            </subviews>
+                                            <animations/>
+                                        </view>
+                                        <animations/>
+                                        <blurEffect style="light"/>
+                                    </visualEffectView>
                                     <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="G8x-C5-dUb">
                                         <rect key="frame" x="0.0" y="210" width="600" height="37"/>
                                         <animations/>
@@ -359,7 +383,6 @@
                                     </label>
                                 </subviews>
                                 <animations/>
-                                <color key="backgroundColor" red="1" green="0.7999920733" blue="0.75563053920000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="G8x-C5-dUb" secondAttribute="bottom" id="1sU-Yk-wh8"/>
                                     <constraint firstAttribute="bottom" secondItem="G8x-C5-dUb" secondAttribute="bottom" id="8fS-0o-rDt"/>
