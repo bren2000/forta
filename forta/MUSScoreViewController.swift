@@ -9,6 +9,7 @@
 import UIKit
 import Haneke
 
+@IBDesignable
 class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIScrollViewDelegate {
     
     
@@ -66,7 +67,7 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
 
         addObserver(self, forKeyPath: "itemInformation", options: NSKeyValueObservingOptions.New, context: nil)
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "toggleChrome:")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
         scorePageScrollView.addGestureRecognizer(tapRecognizer)
         scorePageScrollView.frame = view.bounds
         //scorePageScrollView.dataSource = self
@@ -118,6 +119,7 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
             frame.origin.y = 0.0
             
             let newPageView = UIImageView()
+            
             newPageView.frame = frame
             newPageView.hnk_setImageFromURL(pages[page].imageURL())
             
@@ -190,17 +192,21 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
     
     
     
-    //MARK: - Private Methods
+
     
-    func toggleChrome() {
-        // If it is visible, hide it
-        if toolBar.alpha == 1.0 {
-            hideChrome()
-        }
-        else {
-            showChrome()
+    func handleTap(recognizer: UITapGestureRecognizer) {
+        if recognizer.state == .Ended {
+            // If it is visible, hide it
+            if toolBar.alpha == 1.0 {
+                hideChrome()
+            }
+            else {
+                showChrome()
+            }
         }
     }
+ 
+//MARK: - Private Methods
     
     func hideChrome() {
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
