@@ -27,6 +27,8 @@ class MUSDataController: NSObject {
     var cachedScoresByComposer = [Score]()
     var composerOfCachedScores:String?
     
+    var favouriteScores = []
+    
     // Create the singleton
     static let sharedController = MUSDataController()
     
@@ -339,63 +341,100 @@ class MUSDataController: NSObject {
     }
     
 // MARK: - Favourites
-    
+
     func numberOfFavouriteScores() -> Int {
-        return 22
+        return fetchIdentifiersOfFavourites().count
     }
     
     func scoreAtIndexInFavourites(index: Int) -> Score {
-        return Score()
+        if favouriteScores.count < 0 {
+            return favouriteScores[index] as! Score
+        }
+        let identifiers = fetchIdentifiersOfFavourites()
+        
+        let scoresFetchRequest = NSFetchRequest(entityName: "Score")
+        
+        // Sort order.
+        let titleSortDescriptor = NSSortDescriptor(key: "sortTitle", ascending: true, selector: "caseInsensitiveCompare:")
+        scoresFetchRequest.sortDescriptors = [titleSortDescriptor]
+        
+        // Only get the scores for the given identifier.
+        let predicate = NSPredicate(format: "%K IN %@", argumentArray: ["identifier", identifiers])
+        scoresFetchRequest.predicate = predicate
+        
+        let scores: [AnyObject]?
+        do {
+            scores = try context?.executeFetchRequest(scoresFetchRequest)
+            favouriteScores = scores!
+        } catch let error1 as NSError {
+            print(error1, terminator: "\n")
+        }
+        
+        return favouriteScores.objectAtIndex(index) as! Score
     }
     
-    func fetchIdentifiersOfFavourites() -> [AnyObject] {
-        return ["sss"]
+    func fetchIdentifiersOfFavourites() -> [String] {
+        var favourites: [String]
+        let identifiersOfFavouriteScores = NSUserDefaults.standardUserDefaults().stringForKey(kFavouritesKey)
+        if let _ = identifiersOfFavouriteScores {
+            favourites = (identifiersOfFavouriteScores?.componentsSeparatedByString(","))!
+        } else {
+            favourites = []
+        }
+        return favourites
     }
     
     func isScoreMarkedAsFavourite(score: Score) -> Bool {
+        let favouritesIdentifiers = fetchIdentifiersOfFavourites() as! [String]
+        for var identifier in favouritesIdentifiers {
+            if identifier as! String == score.identifier {
+                return true
+            }
+        }
         return false
     }
     
     func markScore(score: Score, asFavorite isFavourite: Bool) {
         
+        // invalidate the cached favourites
+        favouriteScores = []
+        
+        var modifiedFavourites = NSMutableArray(array: fetchIdentifiersOfFavourites())
+        
+        if isFavourite {
+            // if we're marking the score as a favourite, we'll need to add its
+            // identifier to the list of identifiers.
+            if !isScoreMarkedAsFavourite(score) {
+                modifiedFavourites.addObject(score.identifier)
+            }
+        } else {
+            // otherwise, we'll need to remove its identifier from the list
+            if isScoreMarkedAsFavourite(score) {
+                var identifierToRemove: String = ""
+                for var identifier in modifiedFavourites {
+                    if identifier.isEqualToString(score.identifier) {
+                        identifierToRemove = identifier as! String
+                    }
+                }
+                if !identifierToRemove.isEmpty {
+                    modifiedFavourites.removeObject(identifierToRemove)
+                }
+            }
+        }
+        
+        // Save the modified list of favourites
+        var identifiersString: String = ""
+        for var identifier in modifiedFavourites {
+            identifiersString.appendContentsOf(identifier as! String)
+            if modifiedFavourites.lastObject! as! String != identifier as! String{
+                identifiersString.appendContentsOf(",")
+            }
+        }
+        if identifiersString.characters.count == 0 {
+            NSUserDefaults.standardUserDefaults().setObject(nil, forKey: kFavouritesKey)
+        } else {
+            NSUserDefaults.standardUserDefaults().setObject(identifiersString, forKey: kFavouritesKey)
+        }
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

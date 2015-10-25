@@ -63,7 +63,9 @@ class MUSScoreCollectionViewController: UIViewController, UICollectionViewDataSo
     }
     
     override func viewWillAppear(animated: Bool) {
-        titleLabel.text = titleString
+        if let ts = titleString {
+            titleLabel.text = "\(ts)ss"
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -79,7 +81,7 @@ class MUSScoreCollectionViewController: UIViewController, UICollectionViewDataSo
                 
                 UIView.animateWithDuration(kThumbnailZoomDuration,
                     animations: {
-                        selectedCoverImageView?.frame = CGRect(x: convertedPoint.x, y: convertedPoint.y, width: 121.0, height: 150.0)
+                        self.selectedCoverImageView?.frame = CGRect(x: convertedPoint.x, y: convertedPoint.y, width: 121.0, height: 150.0)
                     },
                     completion:  {(value: Bool) in
                         self.selectedCoverImageView?.removeFromSuperview()

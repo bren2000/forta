@@ -36,7 +36,8 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var creatorLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    
+    @IBOutlet weak var favouriteButton: UIButton!
+
     @IBOutlet weak var scorePageScrollView: UIScrollView!
     @IBOutlet weak var additionalInformationView: UIView!
 
@@ -249,10 +250,20 @@ class MUSScoreViewController: UIViewController, UIPopoverControllerDelegate, UIS
         presentingViewController?.dismissViewControllerAnimated(false, completion: nil)
     }
     
+    
+    @IBAction func toggleFavourite(sender: UIButton) {
+        favouriteButton.selected = !favouriteButton.selected
+        if favouriteButton.selected == true {
+            dataController?.markScore(score!, asFavorite: true)
+            dataController?.markScore(score!, asFavorite: true)
+        } else {
+            dataController?.markScore(score!, asFavorite: false)
+        }
+    }
+    
     // MARK: - KVO
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        //print("ff", appendNewline: true)
         if keyPath! == "itemInformation" {
             // TODO: add spinny check and stop
             creatorLabel.text = itemInformation?.creator

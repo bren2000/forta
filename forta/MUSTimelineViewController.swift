@@ -42,9 +42,10 @@ class MUSTimelineViewController: UIViewController, UIScrollViewDelegate {
         super.init(coder: aDecoder)
     }
 
-
     @IBAction func showFavourites(sender: AnyObject) {
-        // TODO: add when favouurites controller added
+        if let _ = delegate {
+            delegate?.timelineControllerDidSelectFavourites(self)
+        }
     }
     
     func selectDecade(sender: AnyObject) {

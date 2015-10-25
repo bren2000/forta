@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -296,6 +296,115 @@
             </objects>
             <point key="canvasLocation" x="852" y="610.5"/>
         </scene>
+        <!--Favourite Score Collection View Controller-->
+        <scene sceneID="0aD-UM-lWG">
+            <objects>
+                <viewController storyboardIdentifier="FavouritesController" id="XbR-hI-9uo" customClass="MUSFavouriteScoreCollectionViewController" customModule="forta" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9qu-kw-SGU"/>
+                        <viewControllerLayoutGuide type="bottom" id="CAO-1R-8Kf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="W9y-wa-dMM">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4EG-rQ-qmg">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <animations/>
+                                <items>
+                                    <barButtonItem title="Done" id="sri-cI-Qye"/>
+                                </items>
+                            </toolbar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="csU-4x-0Qz">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="G7B-zW-x7N">
+                                    <size key="itemSize" width="144" height="164"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ScoreCell" id="4yC-Rv-Ckv" customClass="MUSScoreCell" customModule="forta" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="144" height="164"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="144" height="164"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="73v-pc-Xyl">
+                                                    <rect key="frame" x="36" y="8" width="72" height="82"/>
+                                                    <animations/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The absent-minded beggar [music] : Kipling's stirring military song : with music / by A.H.P" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="159" translatesAutoresizingMaskIntoConstraints="NO" id="Dy0-YF-HZO">
+                                                    <rect key="frame" x="8" y="92" width="128" height="72"/>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="72" id="4Gt-je-gCN"/>
+                                                        <constraint firstAttribute="width" constant="681" id="hMo-kJ-qXT"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="hMo-kJ-qXT"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="small_note" translatesAutoresizingMaskIntoConstraints="NO" id="JqU-oO-hea">
+                                                    <rect key="frame" x="36" y="19" width="72" height="82"/>
+                                                    <animations/>
+                                                </imageView>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailingMargin" secondItem="JqU-oO-hea" secondAttribute="trailing" constant="28" id="1Mq-eL-R4s"/>
+                                            <constraint firstItem="Dy0-YF-HZO" firstAttribute="leading" secondItem="4yC-Rv-Ckv" secondAttribute="leading" id="2DJ-Cv-WcJ"/>
+                                            <constraint firstItem="JqU-oO-hea" firstAttribute="leading" secondItem="4yC-Rv-Ckv" secondAttribute="leadingMargin" constant="28" id="4pQ-d3-gSU"/>
+                                            <constraint firstItem="73v-pc-Xyl" firstAttribute="leading" secondItem="JqU-oO-hea" secondAttribute="leading" id="4t6-H2-HDn"/>
+                                            <constraint firstItem="JqU-oO-hea" firstAttribute="trailing" secondItem="73v-pc-Xyl" secondAttribute="trailing" id="6bZ-Eh-ZAF"/>
+                                            <constraint firstItem="Dy0-YF-HZO" firstAttribute="top" secondItem="73v-pc-Xyl" secondAttribute="bottom" constant="2" id="JTO-X2-3fR"/>
+                                            <constraint firstItem="Dy0-YF-HZO" firstAttribute="leading" secondItem="4yC-Rv-Ckv" secondAttribute="leadingMargin" id="dIN-8r-WlS"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="JqU-oO-hea" secondAttribute="bottom" constant="55" id="eeh-DL-96x"/>
+                                            <constraint firstItem="JqU-oO-hea" firstAttribute="top" secondItem="4yC-Rv-Ckv" secondAttribute="topMargin" constant="11" id="gBk-l1-0aE"/>
+                                            <constraint firstItem="73v-pc-Xyl" firstAttribute="top" secondItem="4yC-Rv-Ckv" secondAttribute="topMargin" id="jIv-n0-4XW"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="Dy0-YF-HZO" secondAttribute="bottom" id="kdU-tt-KFy"/>
+                                            <constraint firstAttribute="bottom" secondItem="Dy0-YF-HZO" secondAttribute="bottom" id="xAz-We-fM1"/>
+                                            <constraint firstItem="Dy0-YF-HZO" firstAttribute="centerX" secondItem="JqU-oO-hea" secondAttribute="centerX" id="z08-2Z-Iwl"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="2DJ-Cv-WcJ"/>
+                                                <exclude reference="kdU-tt-KFy"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="imageView" destination="73v-pc-Xyl" id="61e-tR-xn3"/>
+                                            <outlet property="noteImageView" destination="JqU-oO-hea" id="gR3-cw-DsW"/>
+                                            <outlet property="titleLabel" destination="Dy0-YF-HZO" id="I2I-xF-Cla"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="dxj-vq-xPC" id="FD3-OY-kG9"/>
+                                    <outlet property="delegate" destination="dxj-vq-xPC" id="h54-jO-yUb"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="600"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CiL-iJ-d2T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1293" y="496"/>
+        </scene>
         <!--Score View Controller-->
         <scene sceneID="Apa-1H-Ntw">
             <objects>
@@ -308,8 +417,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9gr-2t-CgM">
-                                <rect key="frame" x="-8" y="-10" width="617" height="617"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9gr-2t-CgM">
+                                <rect key="frame" x="-8" y="-10" width="614" height="617"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lsA-sA-TkJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="614" height="617"/>
+                                        <animations/>
+                                    </scrollView>
+                                </subviews>
                                 <animations/>
                             </scrollView>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Qe-b8-vih" userLabel="Additional Information View">
@@ -333,6 +448,14 @@
                                                         <blurEffect style="light"/>
                                                     </vibrancyEffect>
                                                 </visualEffectView>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IKw-oV-Yxt">
+                                                    <rect key="frame" x="558" y="33" width="23" height="23"/>
+                                                    <animations/>
+                                                    <state key="normal" image="fav_icon"/>
+                                                    <connections>
+                                                        <action selector="toggleFavourite:" destination="Ibe-4P-5KW" eventType="touchUpInside" id="cwQ-DO-MpS"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <animations/>
                                         </view>
@@ -415,8 +538,8 @@
                         <color key="backgroundColor" red="0.82554006339999997" green="1" blue="0.93992658159999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9Qe-b8-vih" firstAttribute="leading" secondItem="e4d-8m-6u8" secondAttribute="leading" id="5C2-0w-5J2"/>
-                            <constraint firstItem="9Qe-b8-vih" firstAttribute="centerX" secondItem="9gr-2t-CgM" secondAttribute="centerX" id="Gpm-I6-INN"/>
-                            <constraint firstItem="74e-eD-Bab" firstAttribute="centerX" secondItem="9gr-2t-CgM" secondAttribute="centerX" id="JPF-9x-Hbo"/>
+                            <constraint firstItem="9Qe-b8-vih" firstAttribute="centerX" secondItem="9gr-2t-CgM" secondAttribute="centerX" constant="1" id="Gpm-I6-INN"/>
+                            <constraint firstItem="74e-eD-Bab" firstAttribute="centerX" secondItem="9gr-2t-CgM" secondAttribute="centerX" constant="1" id="JPF-9x-Hbo"/>
                             <constraint firstAttribute="bottomMargin" secondItem="9gr-2t-CgM" secondAttribute="bottom" constant="-7" id="Jpc-RR-HfZ"/>
                             <constraint firstItem="9gr-2t-CgM" firstAttribute="leading" secondItem="e4d-8m-6u8" secondAttribute="leadingMargin" constant="-28" id="U4J-hL-Tfq"/>
                             <constraint firstItem="9Qe-b8-vih" firstAttribute="bottom" secondItem="ivz-p2-dwS" secondAttribute="top" id="Yv1-Ty-amH"/>
@@ -433,6 +556,7 @@
                         <outlet property="creatorLabel" destination="gpw-XL-7jd" id="zUB-QP-VQb"/>
                         <outlet property="dateLabel" destination="MoO-ZS-JMy" id="Tsq-t8-Zz0"/>
                         <outlet property="descriptionLabel" destination="AqI-7Q-jm3" id="vTl-6Y-YPH"/>
+                        <outlet property="favouriteButton" destination="IKw-oV-Yxt" id="Bjs-zy-OL7"/>
                         <outlet property="pageControl" destination="G8x-C5-dUb" id="1My-Rf-aV0"/>
                         <outlet property="publisherLabel" destination="alf-7s-VTO" id="FEP-qG-hnb"/>
                         <outlet property="scorePageScrollView" destination="9gr-2t-CgM" id="axQ-KN-TVR"/>
@@ -584,6 +708,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="fav_icon" width="23" height="23"/>
         <image name="small_note" width="75" height="88"/>
     </resources>
 </document>
